@@ -134,11 +134,37 @@ public class Snake extends TimerTask implements KeyListener {
 
             headX = newHead[0];    //Convenience variables for new head x and y
             headY = newHead[1];
+            //implement warp walls
+            //if statements for x axis
+            if (headX < 0 || headX > xSquares)
+            {
+                if (headX<0){
+                    //render new head
+                    snake.add(0,new int[]{headX+xSquares, headY});
+                    //remove snake tail
+                    snake.removeLast();
 
-            if ((headX < 0 || headX > xSquares) || (headY < 0 || headY > ySquares)) {   //Head outside board? Snake hit wall, game over
-                gameOver = clockTicksToRestart;
-                return;
+                }
+                else if (headX>xSquares){
+                    snake.add(0,new int[]{(headX-xSquares-1), headY});
+                    snake.removeLast();
+
+                }
             }
+            //if statements for y axis
+            if (headY < 0 || headY > ySquares) {   //Head outside board? Snake will warp wall
+                if (headY<0){
+                    snake.add(0,new int[]{headX,headY+ySquares});
+                    snake.removeLast();
+
+                }
+                else if (headY>ySquares){
+                    snake.add( 0,new int[] {headX, headY-(ySquares+1)});
+                    snake.removeLast();
+
+                }
+            }
+
 
             if (headX == kibble[0] && headY == kibble[1]) {      //Is kibble in same square as snake head? Snake ate kibble.
                 score++;                              // increase score
